@@ -1,0 +1,114 @@
+@import url(https://fonts.googleapis.com/css?family=Molle:400italic&subset=latin,latin-ext);
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: hsla(242, 95%, 3%, .9);
+    /*background-color: hsla(0,0%,0%,1);*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-container {
+    width: 1200px;
+    height: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    /* box-shadow: 0 0 10px 5px #000000; */
+}
+
+.game-board {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+    height: 1000px;
+    width: 1000px;
+    /* transition: transform 100ms linear; */
+    overflow: hidden;
+}
+/* .snake{
+    width: 10px;
+    height: 10px;
+    background-color: #00FF00;
+    border-radius: 5px;
+    left: 0;
+    top: 0;
+    position: absolute;
+} */
+
+
+
+/* .snake-cell {
+    width: 8px;
+    height: 8px;
+    background-color: #4ee040;
+    position: absolute;
+    transition: all 100ms linear;
+}  */
+.snake{
+    /* transition: all 50ms linear; */
+    z-index: 50;
+}
+.snake-body{
+    position: absolute;
+    background-color: #4ee040;
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    margin: 0;
+    z-index: 99;
+    transition: all 80ms linear;
+    box-shadow: 0 0 2px 1px #1cf038;
+}
+.snake-body-blue{
+    position: absolute;
+    z-index: 2;
+    background-color: #b98930;
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    margin: 0;
+}
+.snake-body-red{
+    position: absolute;
+    width: 8px;
+    height: 8x;
+    padding: 0;
+    margin: 0;
+    z-index: 999;
+    /* box-shadow: 0 0 2px 1px #ec1515; 
+    background-color: red;transition: all 100ms linear;*/
+}
+.apple{
+    position: absolute;
+    /* background-color: #FF0000; 
+    box-shadow: 0 0 2px 1px #FF0000;*/
+    z-index: 100;
+    transition: all 100ms linear;
+}
+.snowflake{
+    position: absolute;
+    color: #20b5fa;
+    z-index: 100;
+    transition: all 100ms linear;
+}
+/*.backgroundSnow{
+     position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    color: #20b5fa;
+    background-color: #719fb0;
+    background-image: url("https://www.transparenttextures.com/patterns/nice-snow.png");
+    transition: all 100ms linear; 
+}*/
