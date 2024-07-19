@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         head.style.backgroundColor = 'red';
         snake.appendChild(head);
         snakeBody.push(head);
-        length += 1;
+        //length += 1;
 
         let left = parseInt(head.style.left);
         let top = parseInt(head.style.top);
@@ -65,15 +65,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function collision() {
-        snakeBody.forEach(part => part.remove());
-        snakeBody = [];
-        let apple = document.querySelector('.apple');
-        if (apple) apple.remove();
-        initSnake();
-        initApple();
-        time = 60;
+        gameInfo = document.querySelector('.game-info');
+        gameInfo.style.visibility = 'visible';
+        document.getElementById('game-over').innerHTML = 'Game Over';
+        document.getElementById('score').innerHTML = 'Score: ' + length;
+        document.getElementById('game-start').innerHTML = 'Play again';
+        canvas.style.display = 'none';
         clearInterval(intervalId);
-        intervalId = setInterval(moveSnake, time);
+        // snakeBody.forEach(part => part.remove());
+        // snakeBody = [];
+        // let apple = document.querySelector('.apple');
+        // if (apple) apple.remove();
+        //initSnake();
+        //initApple();
+        // time = 60;
+        // clearInterval(intervalId);
+        // intervalId = setInterval(moveSnake, time);
         return;
     }
 
@@ -107,15 +114,15 @@ document.addEventListener('DOMContentLoaded', () => {
     //     for (let i = 1; i < snakeBody.length; i++) {
     //         if (headLeft === parseInt(snakeBody[i].style.left) && headTop === parseInt(snakeBody[i].style.top)) {
     //             alert('game over');
-    //             return true; // Kolizja z samym sobą
+    //             return true; 
     //         }
     //     }
 
-    //     return false; // Brak kolizji
+    //     return false;
     // }
 
     function moveSnake() {
-        if (!direction) return; // Jeśli nie ma kierunku, nie ruszaj się
+        if (!direction) return;
 
         let newHead = {
             left: parseInt(snakeBody[0].style.left),
@@ -195,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //console.log(`Apple position: ${parseInt(apple.style.left)}, ${parseInt(apple.style.top)}`);
         
         if (isNear(newHead.left, newHead.top, parseInt(apple.style.left), parseInt(apple.style.top))) {
-            console.log('Apple eaten!');
+            console.log(length);
             apple.remove();
             initApple();
             let newPart = document.createElement('div');
@@ -205,10 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(`Snake length: ${length}`);
             gameBoard.appendChild(newPart);
             //alert('apple eaten');
-            time >= 30 ? time -=1 : time = 30;
+            time >= 45 ? time -=1 : time = 45;
             clearInterval(intervalId);
             intervalId = setInterval(moveSnake, prevTime);
-            if(length >= 6 && length % 5 == 0) {
+            if(length >= 5 && length % 5 == 0) {
                 let snowflake = document.querySelector('.snowflake');
                 if (snowflake) snowflake.remove();
                 initSnowflake();
@@ -219,37 +226,54 @@ document.addEventListener('DOMContentLoaded', () => {
         let snowflake = document.querySelector('.snowflake');
         if (snowflake) {
             if (isNear(newHead.left, newHead.top, parseInt(snowflake.style.left), parseInt(snowflake.style.top))) {
+                let canvas = document.getElementById('canv');
+        
+                // Jeśli canvas nie istnieje, utwórz go
+                if (!canvas) {
+                    canvas = document.createElement('canvas');
+                    canvas.id = 'canv';
+                    document.body.appendChild(canvas);
+                } else {
+                    canvas.style.display = 'block'; // Pokaż canvas, jeśli już istnieje
+                }
+        
                 Snowy();
                 snowflake.remove();
                 if (length >= 6) {
                     let existingSnowflake = document.querySelector('.snowflake');
                     if (existingSnowflake) {
                         snowflake.remove();
-                    } 
+                    }
                 }
                 let backgroundSnow = document.createElement('div');
                 backgroundSnow.classList.add('backgroundSnow');
                 gameBoard.appendChild(backgroundSnow);
-
+        
                 let transition = document.querySelector('.snake-body');
                 transition.style.transition = 'all 140ms linear';
                 head.style.transition = 'all 140ms linear';
 
-                prevTime = time;
+                prevTime = 60 - length;
                 time = 100;
                 clearInterval(intervalId);
                 intervalId = setInterval(moveSnake, time);
 
+                if (isNear(newHead.left, newHead.top, parseInt(apple.style.left), parseInt(apple.style.top))) {
+                    prevTime = 60 - length; 
+                }
+
                 setTimeout(() => {
                     let canvas = document.getElementById('canv');
+                    time = prevTime;
                     if (canvas) {
-                        canvas.remove();
+                        canvas.style.display = 'none';
                         clearInterval(intervalId);
-                        intervalId = setInterval(moveSnake, prevTime);
+                        intervalId = setInterval(moveSnake, time);
                     }
                 }, 8000);
             }
         }
+        
 
         for (let i = snakeBody.length - 1; i > 0; i--) {
             snakeBody[i].style.left = snakeBody[i - 1].style.left;
@@ -259,11 +283,25 @@ document.addEventListener('DOMContentLoaded', () => {
         snakeBody[0].style.left = newHead.left + 'px';
         snakeBody[0].style.top = newHead.top + 'px';
     }
-
-    initSnake();
-    initApple();
-    /*if(length >= 6)*/ initSnowflake();
-    intervalId = setInterval(moveSnake, time);
+    document.getElementById('game-start').addEventListener('click', () => {
+        gameInfo = document.querySelector('.game-info');
+        gameInfo.style.visibility = 'hidden';
+        snakeBody.forEach(part => part.remove());
+        snakeBody = [];
+        let apple = document.querySelector('.apple');
+        if (apple) apple.remove();
+        initSnake();
+        initApple();
+        let snowflake = document.querySelector('.snowflake');
+        if(snowflake) snowflake.remove();
+        initSnowflake()
+        length = 0;
+        time = 60;
+        clearInterval(intervalId);
+        intervalId = setInterval(moveSnake, time);
+        return;
+    });
+    
 
     document.addEventListener('keydown', (e) => {
         switch (e.keyCode) {
@@ -294,7 +332,6 @@ function Snowy() {
     const sizeCoefficient = 1.3;
     const minSpeed = 1;
 
-    // Tworzenie płatków śniegu
     for (let i = 0; i < numSnowflakes; ++i) {
         const size = (50 / (10 + (Math.random() * 500))) * sizeCoefficient;
         const speed = Math.max((Math.pow(size * 0.8, 2) * 0.15) * speedFactor, minSpeed);
